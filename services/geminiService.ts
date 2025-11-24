@@ -1,7 +1,7 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Initialize the client with the API key from environment variables
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
 
 const SYSTEM_INSTRUCTION = `
 Você é uma assistente virtual acolhedora e inspiradora da equipe de Ariana Borges.
@@ -22,28 +22,24 @@ Seja breve e sempre incentive a pessoa a se inscrever ("Liberte-se").
 
 export const sendMessageToGemini = async (history: { role: string; text: string }[], newMessage: string): Promise<string> => {
   try {
-    const model = 'gemini-2.5-flash';
-    
-    // Construct the chat history for the model
-    // Note: The specific Chat API formatting might vary, but generateContent with history context works well for single-turn stateless or simple stateful simulations.
-    // However, leveraging the chat capabilities is better.
-    
-    const chat = ai.chats.create({
-      model: model,
-      config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
-      },
-      history: history.map(h => ({
-        role: h.role,
-        parts: [{ text: h.text }]
-      }))
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.0-flash-exp",
+      systemInstruction: SYSTEM_INSTRUCTION,
     });
 
-    const response = await chat.sendMessage({
-      message: newMessage
+    // Convert history to the format expected by the SDK
+    const chatHistory = history.map(h => ({
+      role: h.role === 'user' ? 'user' : 'model',
+      parts: [{ text: h.text }]
+    }));
+
+    const chat = model.startChat({
+      history: chatHistory,
     });
 
-    return response.text || "Desculpe, senti uma oscilação na energia. Poderia repetir?";
+    const result = await chat.sendMessage(newMessage);
+    const response = await result.response;
+    return response.text() || "Desculpe, senti uma oscilação na energia. Poderia repetir?";
   } catch (error) {
     console.error("Erro ao conectar com o guia espiritual:", error);
     return "No momento, estamos em silêncio profundo. Tente novamente em instantes.";
