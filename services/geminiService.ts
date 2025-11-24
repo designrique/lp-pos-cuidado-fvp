@@ -23,8 +23,7 @@ Seja breve e sempre incentive a pessoa a se inscrever ("Liberte-se").
 export const sendMessageToGemini = async (history: { role: string; text: string }[], newMessage: string): Promise<string> => {
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-exp",
-      systemInstruction: SYSTEM_INSTRUCTION,
+      model: "gemini-1.5-flash",
     });
 
     // Convert history to the format expected by the SDK
@@ -33,8 +32,21 @@ export const sendMessageToGemini = async (history: { role: string; text: string 
       parts: [{ text: h.text }]
     }));
 
+    // Add system instruction as the first message in history
+    const fullHistory = [
+      {
+        role: 'user',
+        parts: [{ text: SYSTEM_INSTRUCTION }]
+      },
+      {
+        role: 'model',
+        parts: [{ text: 'Entendido! Estou aqui para ajudar com dúvidas sobre a Mesa de Salomão. Como posso te ajudar?' }]
+      },
+      ...chatHistory
+    ];
+
     const chat = model.startChat({
-      history: chatHistory,
+      history: fullHistory,
     });
 
     const result = await chat.sendMessage(newMessage);
