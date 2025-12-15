@@ -13,7 +13,7 @@ const testimonials: Testimonial[] = [
   {
     id: 1,
     name: "Maria Silva",
-    role: "Participante Ciclo 1",
+    role: "Jornada Completa",
     text: "A Mesa de Salomão mudou completamente minha perspectiva sobre prosperidade. Senti os bloqueios se dissolvendo dia após dia e oportunidades surgindo do nada.",
     image: "https://picsum.photos/100/100?random=1"
   },
@@ -27,7 +27,7 @@ const testimonials: Testimonial[] = [
   {
     id: 3,
     name: "Ana Costa",
-    role: "Participante Ciclo 2",
+    role: "Jornada Completa",
     text: "Eu estava estagnada profissionalmente há anos. Após os 12 dias de abertura de caminhos, recebi uma proposta que esperava há muito tempo. Gratidão!",
     image: "https://picsum.photos/100/100?random=3"
   },
@@ -78,33 +78,32 @@ const Testimonials: React.FC = () => {
         <h2 className="font-serif text-3xl md:text-5xl text-center mb-16">
           Histórias de <span className="text-brand-gold">Libertação</span>
         </h2>
-        
+
         <div className="max-w-4xl mx-auto">
           <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl">
             <Quote className="absolute top-8 left-8 text-brand-gold opacity-30 w-12 h-12 md:w-16 md:h-16" />
-            
+
             <div className="relative overflow-hidden min-h-[300px] flex items-center">
               {testimonials.map((testimonial, index) => (
-                <div 
+                <div
                   key={testimonial.id}
-                  className={`absolute w-full transition-all duration-700 ease-in-out transform ${
-                    index === currentIndex 
-                      ? 'opacity-100 translate-x-0' 
-                      : index < currentIndex 
-                        ? 'opacity-0 -translate-x-full' 
+                  className={`absolute w-full transition-all duration-700 ease-in-out transform ${index === currentIndex
+                      ? 'opacity-100 translate-x-0'
+                      : index < currentIndex
+                        ? 'opacity-0 -translate-x-full'
                         : 'opacity-0 translate-x-full'
-                  }`}
+                    }`}
                 >
                   <div className="flex flex-col items-center text-center">
                     <p className="font-sans text-xl md:text-2xl text-gray-200 italic mb-8 leading-relaxed max-w-2xl">
                       "{testimonial.text}"
                     </p>
-                    
+
                     <div className="flex flex-col items-center gap-4">
                       <div className="relative">
-                        <img 
-                          src={testimonial.image} 
-                          alt={testimonial.name} 
+                        <img
+                          src={testimonial.image}
+                          alt={testimonial.name}
                           className="w-16 h-16 rounded-full border-2 border-brand-gold object-cover shadow-lg"
                         />
                         <div className="absolute -bottom-2 -right-2 bg-brand-gold rounded-full p-1">
@@ -122,14 +121,14 @@ const Testimonials: React.FC = () => {
             </div>
 
             {/* Navigation Buttons */}
-            <button 
+            <button
               onClick={handlePrev}
               className="absolute top-1/2 -left-4 md:-left-12 transform -translate-y-1/2 bg-white/10 hover:bg-brand-gold hover:text-white text-gray-300 p-3 rounded-full backdrop-blur-md transition-all duration-300 group"
               aria-label="Anterior"
             >
               <ChevronLeft className="w-6 h-6 group-hover:-translate-x-1 transition-transform" />
             </button>
-            <button 
+            <button
               onClick={() => { handleNext(); setIsAutoPlaying(false); }}
               className="absolute top-1/2 -right-4 md:-right-12 transform -translate-y-1/2 bg-white/10 hover:bg-brand-gold hover:text-white text-gray-300 p-3 rounded-full backdrop-blur-md transition-all duration-300 group"
               aria-label="Próximo"
@@ -144,9 +143,8 @@ const Testimonials: React.FC = () => {
               <button
                 key={index}
                 onClick={() => handleDotClick(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentIndex ? 'bg-brand-gold w-8' : 'bg-gray-600 hover:bg-gray-500'
-                }`}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-brand-gold w-8' : 'bg-gray-600 hover:bg-gray-500'
+                  }`}
                 aria-label={`Ir para depoimento ${index + 1}`}
               />
             ))}
