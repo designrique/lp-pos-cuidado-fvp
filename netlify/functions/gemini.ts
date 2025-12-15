@@ -1,7 +1,8 @@
-import { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+import { Handler, HandlerEvent } from "@netlify/functions";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+// Inicialize o SDK sem a chave de API. O Netlify AI Gateway cuidará disso.
+const genAI = new GoogleGenerativeAI();
 
 const SYSTEM_INSTRUCTION = `
 Você é uma assistente virtual acolhedora e inspiradora da equipe de Ariana Borges.
@@ -20,7 +21,7 @@ Informações chaves para responder:
 Seja breve e sempre incentive a pessoa a se inscrever ("Liberte-se").
 `;
 
-const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
+const handler: Handler = async (event: HandlerEvent) => {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -31,13 +32,16 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
   try {
     const { history, newMessage } = JSON.parse(event.body || "{}");
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    // Use um modelo estável e recomendado como "gemini-pro"
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
+    // Mapeia o histórico para o formato esperado pelo SDK
     const chatHistory = history.map((h: { role: string, text: string }) => ({
       role: h.role === 'user' ? 'user' : 'model',
       parts: [{ text: h.text }],
     }));
 
+    // Constrói o histórico completo com a instrução do sistema
     const fullHistory = [
       {
         role: 'user',
