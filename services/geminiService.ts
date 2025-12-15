@@ -24,23 +24,36 @@ export const sendMessageToGemini = async (history: { role: string; text: string 
   try {
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
-      systemInstruction: SYSTEM_INSTRUCTION,
     });
 
+    // Convert history to the format expected by the SDK
+    const chatHistory = history.map(h => ({
+      role: h.role === 'user' ? 'user' : 'model',
+      parts: [{ text: h.text }]
+    }));
+
+    // Add system instruction as the first message in history
+    const fullHistory = [
+      {
+        role: 'user',
+        parts: [{ text: SYSTEM_INSTRUCTION }]
+      },
+      {
+        role: 'model',
+        parts: [{ text: 'Entendido! Estou aqui para ajudar com dúvidas sobre a Mesa de Salomão. Como posso te ajudar?' }]
+      },
+      ...chatHistory
+    ];
+
     const chat = model.startChat({
-      history: history.map(h => ({
-        role: h.role,
-        parts: [{ text: h.text }],
-      })),
+      history: fullHistory,
     });
 
     const result = await chat.sendMessage(newMessage);
-    const response = result.response;
-    const text = response.text();
-    
-    return text;
+    const response = await result.response;
+    return response.text() || "Desculpe, senti uma oscilação na energia. Poderia repetir?";
   } catch (error) {
-    console.error("Error connecting to Gemini:", error);
-    return "Ocorreu um erro ao processar sua mensagem. Por favor, tente novamente.";
+    console.error("Erro ao conectar com o guia espiritual:", error);
+    return "No momento, estamos em silêncio profundo. Tente novamente em instantes.";
   }
 };
