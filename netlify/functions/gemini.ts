@@ -1,8 +1,8 @@
 import { Handler, HandlerEvent } from "@netlify/functions";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Inicialize o SDK sem a chave de API. O Netlify AI Gateway cuidará disso.
-const genAI = new GoogleGenerativeAI();
+// Inicialize o SDK com um objeto vazio. O Netlify AI Gateway cuidará da autenticação.
+const genAI = new GoogleGenerativeAI({});
 
 const SYSTEM_INSTRUCTION = `
 Você é uma assistente virtual acolhedora e inspiradora da equipe de Ariana Borges.
