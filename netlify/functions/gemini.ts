@@ -1,7 +1,7 @@
 import { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.VITE_GEMINI_API_KEY || "");
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 const SYSTEM_INSTRUCTION = `
 Você é uma assistente virtual acolhedora e inspiradora da equipe de Ariana Borges.
