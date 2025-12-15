@@ -1,8 +1,9 @@
 import { Handler, HandlerEvent } from "@netlify/functions";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Inicialize o SDK com um objeto vazio. O Netlify AI Gateway cuidará da autenticação.
-const genAI = new GoogleGenerativeAI({});
+// Voltar a inicializar com a chave de API via variável de ambiente.
+// Isso é seguro, pois o código da função roda no servidor da Netlify.
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 const SYSTEM_INSTRUCTION = `
 Você é uma assistente virtual acolhedora e inspiradora da equipe de Ariana Borges.
@@ -32,24 +33,26 @@ const handler: Handler = async (event: HandlerEvent) => {
   try {
     const { history, newMessage } = JSON.parse(event.body || "{}");
 
-    // Use um modelo estável e recomendado como "gemini-pro"
+    // Usar o modelo "gemini-pro" que é estável.
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-    // Mapeia o histórico para o formato esperado pelo SDK
-    const chatHistory = history.map((h: { role: string, text: string }) => ({
-      role: h.role === 'user' ? 'user' : 'model',
+    const chatHistory = history.map((h: { role: string; text: string }) => ({
+      role: h.role === "user" ? "user" : "model",
       parts: [{ text: h.text }],
     }));
 
-    // Constrói o histórico completo com a instrução do sistema
     const fullHistory = [
       {
-        role: 'user',
+        role: "user",
         parts: [{ text: SYSTEM_INSTRUCTION }],
       },
       {
-        role: 'model',
-        parts: [{ text: 'Entendido! Estou aqui para ajudar com dúvidas sobre a Mesa de Salomão. Como posso te ajudar?' }],
+        role: "model",
+        parts: [
+          {
+            text: "Entendido! Estou aqui para ajudar com dúvidas sobre a Mesa de Salomão. Como posso te ajudar?",
+          },
+        ],
       },
       ...chatHistory,
     ];
@@ -57,7 +60,7 @@ const handler: Handler = async (event: HandlerEvent) => {
     const chat = model.startChat({
       history: fullHistory,
     });
-    
+
     const result = await chat.sendMessage(newMessage);
     const response = result.response;
     const text = response.text();
