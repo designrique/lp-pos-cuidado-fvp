@@ -1,6 +1,7 @@
 import React from 'react';
 import { Star } from 'lucide-react';
 import { PricingOption } from '../types';
+import { useCheckout } from './CheckoutContext';
 
 const plans: PricingOption[] = [
   {
@@ -29,6 +30,8 @@ const plans: PricingOption[] = [
 ];
 
 const Pricing: React.FC = () => {
+  const { openCheckout } = useCheckout();
+
   return (
     <section className="py-24 bg-white" id="investimento">
       <div className="max-w-6xl mx-auto px-6">
@@ -39,8 +42,8 @@ const Pricing: React.FC = () => {
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {plans.map((plan, idx) => (
-            <div 
-              key={idx} 
+            <div
+              key={idx}
               className={`relative flex flex-col p-8 rounded-3xl transition-all duration-300 ${plan.recommended ? 'bg-brand-lilac/10 border-2 border-brand-gold shadow-xl scale-105 z-10' : 'bg-gray-50 border border-gray-100 hover:shadow-lg'}`}
             >
               {plan.recommended && (
@@ -48,7 +51,7 @@ const Pricing: React.FC = () => {
                   MAIS ESCOLHIDO
                 </div>
               )}
-              
+
               <h3 className="font-serif text-2xl text-brand-dark mb-2">{plan.title}</h3>
               <div className="my-6">
                 <span className="text-4xl font-serif text-brand-gold font-bold">{plan.price}</span>
@@ -65,7 +68,10 @@ const Pricing: React.FC = () => {
                 ))}
               </ul>
 
-              <button className={`w-full py-4 rounded-xl font-bold transition-colors ${plan.recommended ? 'bg-brand-gold text-white hover:bg-yellow-600' : 'bg-white border-2 border-gray-200 text-gray-600 hover:border-brand-gold hover:text-brand-gold'}`}>
+              <button
+                onClick={openCheckout}
+                className={`w-full py-4 rounded-xl font-bold transition-colors ${plan.recommended ? 'bg-brand-gold text-white hover:bg-yellow-600' : 'bg-white border-2 border-gray-200 text-gray-600 hover:border-brand-gold hover:text-brand-gold'}`}
+              >
                 Garantir Minha Vaga
               </button>
             </div>
