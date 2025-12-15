@@ -33,8 +33,8 @@ const handler: Handler = async (event: HandlerEvent) => {
   try {
     const { history, newMessage } = JSON.parse(event.body || "{}");
 
-    // Usar o modelo "gemini-1.0-pro" para máxima compatibilidade.
-    const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
+    // Usar o modelo "gemini-1.5-flash" - modelo atual recomendado pela Google.
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const chatHistory = history.map((h: { role: string; text: string }) => ({
       role: h.role === "user" ? "user" : "model",
