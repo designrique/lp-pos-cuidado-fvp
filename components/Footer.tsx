@@ -1,5 +1,5 @@
 import React from 'react';
-import { Instagram, Mail, Phone } from 'lucide-react';
+import { Instagram } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -13,14 +13,8 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="flex gap-4 md:gap-6">
-          <a href="#" className="text-gray-400 hover:text-brand-gold transition-colors">
+          <a href="https://instagram.com/institutoarianaborges" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand-gold transition-colors">
             <Instagram size={20} className="md:w-6 md:h-6" />
-          </a>
-          <a href="#" className="text-gray-400 hover:text-brand-gold transition-colors">
-            <Mail size={20} className="md:w-6 md:h-6" />
-          </a>
-          <a href="#" className="text-gray-400 hover:text-brand-gold transition-colors">
-            <Phone size={20} className="md:w-6 md:h-6" />
           </a>
         </div>
       </div>
