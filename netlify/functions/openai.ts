@@ -19,8 +19,7 @@ Use um tom de voz calmo, espiritualizado e motivacional. Seja breve e objetiva.
 - As gravações começam a ser liberadas no dia 23/12/2024
 
 **Investimento:**
-- Jornada Completa (Recomendado): R$555,00
-- Ciclo Individual: R$333,00 por ciclo
+- Jornada Completa: R$555,00 (valor único)
 
 **Benefícios inclusos:**
 - Acesso aos 21 dias completos de gravações
