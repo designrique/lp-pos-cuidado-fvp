@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useCheckout } from './CheckoutContext';
 
-const CHECKOUT_URL = 'https://payfast.greenn.com.br/pre-checkout/149959';
+const CHECKOUT_URL = 'https://payfast.greenn.com.br/150027';
 
 const CheckoutModal: React.FC = () => {
     const { isOpen, closeCheckout } = useCheckout();
