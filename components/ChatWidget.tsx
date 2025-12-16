@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Sparkles } from 'lucide-react';
 import { ChatMessage } from '../types';
-import { sendMessageToGemini } from '../services/geminiService';
+import { sendMessage } from '../services/chatService';
 
 const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,23 +40,23 @@ const ChatWidget: React.FC = () => {
     setIsLoading(true);
 
     try {
-        // Convert internal ChatMessage format to simple history for service
-        const history = messages.map(m => ({ role: m.role, text: m.text }));
-        
-        const responseText = await sendMessageToGemini(history, userMsg.text);
-        
-        const aiMsg: ChatMessage = {
-            id: (Date.now() + 1).toString(),
-            role: 'model',
-            text: responseText,
-            timestamp: new Date()
-        };
-        
-        setMessages(prev => [...prev, aiMsg]);
+      // Convert internal ChatMessage format to simple history for service
+      const history = messages.map(m => ({ role: m.role, text: m.text }));
+
+      const responseText = await sendMessage(history, userMsg.text);
+
+      const aiMsg: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: 'model',
+        text: responseText,
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, aiMsg]);
     } catch (error) {
-        console.error(error);
+      console.error(error);
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -83,11 +83,10 @@ const ChatWidget: React.FC = () => {
           <div className="h-[400px] overflow-y-auto p-4 bg-brand-beige space-y-4">
             {messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] p-3 rounded-2xl font-sans text-sm leading-relaxed ${
-                  msg.role === 'user' 
-                    ? 'bg-brand-gold text-white rounded-tr-none' 
-                    : 'bg-white text-gray-700 shadow-sm rounded-tl-none border border-gray-100'
-                }`}>
+                <div className={`max-w-[80%] p-3 rounded-2xl font-sans text-sm leading-relaxed ${msg.role === 'user'
+                  ? 'bg-brand-gold text-white rounded-tr-none'
+                  : 'bg-white text-gray-700 shadow-sm rounded-tl-none border border-gray-100'
+                  }`}>
                   {msg.text}
                 </div>
               </div>
@@ -114,7 +113,7 @@ const ChatWidget: React.FC = () => {
               placeholder="Digite sua dúvida..."
               className="flex-1 bg-gray-50 border-transparent focus:border-brand-lilac focus:bg-white focus:ring-0 rounded-xl px-4 py-2 font-sans text-sm transition-all outline-none"
             />
-            <button 
+            <button
               onClick={handleSend}
               disabled={isLoading || !input.trim()}
               className="bg-brand-gold text-white p-2 rounded-xl hover:bg-yellow-600 disabled:opacity-50 transition-colors"
@@ -125,7 +124,7 @@ const ChatWidget: React.FC = () => {
         </div>
       )}
 
-      <button 
+      <button
         onClick={() => setIsOpen(!isOpen)}
         className="group flex items-center gap-2 bg-brand-lilac hover:bg-brand-lilacDark text-brand-dark hover:text-white px-5 py-4 rounded-full shadow-lg transition-all duration-300"
       >
