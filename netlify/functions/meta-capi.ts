@@ -28,19 +28,27 @@ const handler: Handler = async (event: HandlerEvent) => {
             };
         }
 
+        const eventTime = Math.floor(Date.now() / 1000);
         const capiPayload = {
             data: [
                 {
                     event_name: event_name,
-                    event_time: Math.floor(Date.now() / 1000),
+                    event_time: eventTime,
                     action_source: "website",
                     user_data: {
                         em: email ? [hashData(email)] : [],
-                        ph: phone ? [hashData(phone)] : []
+                        ph: phone ? [hashData(phone)] : [null]
+                    },
+                    attribution_data: {
+                        attribution_share: "1.0"
                     },
                     custom_data: {
                         currency: currency || "BRL",
                         value: value ? value.toString() : "555.00"
+                    },
+                    original_event_data: {
+                        event_name: event_name,
+                        event_time: eventTime
                     }
                 }
             ]

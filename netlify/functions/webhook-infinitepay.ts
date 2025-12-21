@@ -30,19 +30,27 @@ const handler: Handler = async (event: HandlerEvent) => {
                 const phone = data.customer?.phone_number || "";
                 const value = data.amount ? data.amount / 100 : 555.00;
 
+                const eventTime = Math.floor(Date.now() / 1000);
                 const capiPayload = {
                     data: [
                         {
                             event_name: "Purchase",
-                            event_time: Math.floor(Date.now() / 1000),
+                            event_time: eventTime,
                             action_source: "website",
                             user_data: {
                                 em: email ? [hashData(email)] : [],
-                                ph: phone ? [hashData(phone)] : []
+                                ph: phone ? [hashData(phone)] : [null]
+                            },
+                            attribution_data: {
+                                attribution_share: "1.0"
                             },
                             custom_data: {
                                 currency: "BRL",
                                 value: value.toString()
+                            },
+                            original_event_data: {
+                                event_name: "Purchase",
+                                event_time: eventTime
                             }
                         }
                     ]
