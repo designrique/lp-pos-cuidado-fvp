@@ -27,4 +27,8 @@ Informações para configuração e testes:
 *   **NSU de Exemplo:** `order-nsu-123`
 *   **URL de Redirecionamento:** `https://mesa-salomao.netlify.app/obrigado`
 *   **Webhook URL:** `https://mesa-salomao.netlify.app/webhook-infinitepay`
+*   **Meta CAPI Endpoint:** `/.netlify/functions/meta-capi` (para eventos manuais)
 *   **Branch de Desenvolvimento:** `feat/infinitepay-integration`
+
+> [!IMPORTANT]
+> Para o Meta CAPI funcionar, lembre-se de configurar a variável de ambiente `META_ACCESS_TOKEN` no painel do Netlify. O `META_PIXEL_ID` já está configurado como `1414964383316703`.
