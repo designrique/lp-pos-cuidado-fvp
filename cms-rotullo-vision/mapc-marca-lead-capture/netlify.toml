@@ -1,0 +1,123 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[dev]
+  command = "npm run dev"
+  functions = "netlify/functions"
+  publish = "dist"
+  port = 8888
+  targetPort = 5173
+
+# Configuração API Netlify Functions
+
+# 1. Admin Panel Proxy (Frontend do Payload)
+[[redirects]]
+  from = "/admin/"
+  to = "https://cms-rotullo-vision-production.up.railway.app/admin/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/admin"
+  to = "https://cms-rotullo-vision-production.up.railway.app/admin/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "https://cms-rotullo-vision-production.up.railway.app/admin/:splat"
+  status = 200
+  force = true
+
+# 2. Serverless Functions (Prioridade Alta)
+[[redirects]]
+  from = "/api/whatsapp"
+  to = "/.netlify/functions/send-whatsapp"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/submit"
+  to = "/.netlify/functions/submit-form"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/nocodb"
+  to = "/.netlify/functions/nocodb-submit"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/health-check"
+  to = "/.netlify/functions/health-check"
+  status = 200
+  force = true
+
+# 3. Payload CMS API Proxy (Substituindo antigo Mautic)
+# Redireciona qualquer outra chamada /api/... para o backend no Railway
+[[redirects]]
+  from = "/api/*"
+  to = "https://cms-rotullo-vision-production.up.railway.app/api/:splat"
+  status = 200
+  force = true
+  headers = {Access-Control-Allow-Origin = "*", Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS", Access-Control-Allow-Headers = "Origin, X-Requested-With, Content-Type, Accept, Authorization"}
+
+# 4. Proxy de Mídia (Imagens do Payload)
+[[redirects]]
+  from = "/media/*"
+  to = "https://cms-rotullo-vision-production.up.railway.app/media/:splat"
+  status = 200
+  force = true
+
+# 4. Redirecionamento para SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# 5. Redirecionamento www para non-www
+[[redirects]]
+  from = "https://www.registrese.mapc.com.br/*"
+  to = "https://registrese.mapc.com.br/:splat"
+  status = 301
+  force = true
+
+[build.environment]
+  NODE_VERSION = "20"
+  SECRETS_SCAN_OMIT_PATHS = "dist/assets/*"
+  SECRETS_SCAN_OMIT_KEYS = "VITE_MAUTIC_OAUTH_CLIENT_ID,VITE_MAUTIC_OAUTH_CLIENT_SECRET,VITE_MAUTIC_URL,EVOLUTION_API_KEY"
+  EVOLUTION_API_INSTANCE = "mapc"
+  EVOLUTION_API_BASE_URL = "https://api.digitalfisher.com.br"
+
+# Headers para compressão e cache
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

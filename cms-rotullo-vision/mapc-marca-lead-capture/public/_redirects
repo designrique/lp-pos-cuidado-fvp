@@ -1,0 +1,16 @@
+# Admin panel proxy
+/admin/  https://cms-rotullo-vision-production.up.railway.app/admin/  200!
+/admin   https://cms-rotullo-vision-production.up.railway.app/admin/  200!
+/admin/*  https://cms-rotullo-vision-production.up.railway.app/admin/:splat  200!
+
+# Netlify Functions (Specific Overrides)
+/api/submit  /.netlify/functions/submit-form  200
+/api/whatsapp  /.netlify/functions/send-whatsapp  200
+/api/nocodb  /.netlify/functions/nocodb-submit  200
+/api/health-check  /.netlify/functions/health-check  200
+
+# Payload CMS API Catch-all (Replaces Mautic)
+/api/*  https://cms-rotullo-vision-production.up.railway.app/api/:splat  200!
+
+# SPA Catch-all
+/* /index.html 200

@@ -1,0 +1,73 @@
+/* Estilos específicos para o campo de telefone com prefixo do país */
+.phone-input-container {
+  position: relative;
+}
+
+/* Destacar o código do país no campo de telefone */
+.phone-input-with-country {
+  padding-left: 3.25rem !important; /* Espaço para o prefixo do país */
+  letter-spacing: 1px !important; /* Melhor separação entre números */
+  font-size: 16px !important; /* Tamanho de fonte melhor para mobile */
+  font-family: 'Courier New', monospace !important; /* Fonte monospace para alinhamento de números */
+}
+
+.phone-country-code {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #2563EB; /* Azul para destacar */
+  font-weight: 600;
+  padding-right: 0.75rem;
+  border-right: 2px solid #e2e8f0;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  font-family: 'Courier New', monospace;
+}
+
+/* Mostra a formatação visual como pseudo elemento */
+#mauticform_input_formulariodecontatolandingpage_telefonewhatsapp[data-formatted]::before {
+  content: attr(data-formatted);
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  background-color: #f3f4f6;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: #4b5563;
+  pointer-events: none;
+  z-index: 10;
+  max-width: 60%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Formatação especial para o campo de telefone */
+.phone-format-hint {
+  color: #6b7280; /* Cinza para dica */
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Estilo para o campo de telefone quando tem foco */
+#mauticform_input_formulariodecontatolandingpage_telefonewhatsapp:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Destacar a dica do campo de telefone */
+#mauticform_formulariodecontatolandingpage_telefonewhatsapp .mauticform-helpmessage {
+  font-weight: 500;
+  color: #4b5563;
+  background-color: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.25rem;
+  display: inline-block;
+}

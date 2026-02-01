@@ -1,0 +1,6 @@
+id,nome,email,telefone,empresa,servico_interesse,origem,status_lead,data_criacao,data_ultimo_contato,responsavel,observacoes,valor_estimado,probabilidade_fechamento,data_previsao_fechamento,mensagem_inicial
+1,João Silva,joao@empresa.com,(11) 99999-9999,Empresa XYZ,registro-marca,Website,Novo Lead,2024-01-15,2024-01-15,Consultor A,Interessado em proteger marca da empresa,5000,20,2024-02-15,Gostaria de saber sobre registro de marca
+2,Maria Santos,maria@startup.com,(21) 88888-8888,StartupTech,registro-patente,Indicação,Qualificado,2024-01-14,2024-01-16,Consultor B,Startup com produto inovador,15000,60,2024-02-28,Preciso registrar patente de software
+3,Pedro Costa,pedro@industria.com,(31) 77777-7777,Indústria ABC,desenho-industrial,Google Ads,Proposta Enviada,2024-01-10,2024-01-18,Consultor A,Grande empresa industrial,8000,80,2024-01-30,Proteção para novo produto
+4,Ana Oliveira,ana@consultoria.com,(41) 66666-6666,Consultoria Legal,busca-anterioridade,LinkedIn,Negociação,2024-01-08,2024-01-20,Consultor C,Escritório de advocacia parceiro,3000,90,2024-01-25,Busca para cliente
+5,Carlos Mendes,carlos@tech.com,(51) 55555-5555,TechCorp,monitoramento-marca,Website,Fechado-Ganho,2024-01-05,2024-01-22,Consultor B,Contrato de monitoramento anual,12000,100,2024-01-22,Monitoramento contínuo

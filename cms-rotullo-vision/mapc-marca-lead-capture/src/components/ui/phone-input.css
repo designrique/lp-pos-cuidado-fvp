@@ -1,0 +1,97 @@
+/* Estilos para o componente PhoneInput */
+.phone-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.phone-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #f8fafc;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.phone-input-container.focused {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+.phone-input-container.has-error {
+  border-color: #e11d48;
+}
+
+.phone-country-code {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #2563EB;
+  font-weight: 600;
+  padding-right: 0.75rem;
+  border-right: 1px solid #e2e8f0;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  font-family: monospace;
+  z-index: 10;
+}
+
+.phone-input {
+  padding-left: 3.25rem !important;
+  font-family: monospace !important;
+  letter-spacing: 1px !important;
+  font-size: 16px !important;
+}
+
+.phone-format-preview {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.875rem;
+  color: #64748b;
+  background-color: #f1f5f9;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  pointer-events: none;
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.phone-format-hint {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+  margin-left: 0.25rem;
+}
+
+/* Alterações para garantir compatibilidade com diferentes temas */
+.dark .phone-input-container {
+  background-color: #1e293b;
+}
+
+.dark .phone-country-code {
+  border-right-color: #334155;
+  color: #60a5fa;
+}
+
+.dark .phone-format-preview {
+  background-color: #334155;
+  color: #cbd5e1;
+}
+
+.dark .phone-format-hint {
+  color: #94a3b8;
+}
+
+/* Garantir que funcione bem em telas pequenas */
+@media (max-width: 640px) {
+  .phone-format-preview {
+    display: none;
+  }
+}

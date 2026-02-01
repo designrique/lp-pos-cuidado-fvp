@@ -1,0 +1,40 @@
+/* Otimizações de performance para reduzir warnings de event listeners */
+
+/* Forçar event listeners passivos para elementos de scroll */
+* {
+  touch-action: manipulation;
+}
+
+/* Otimizar iframes do YouTube */
+iframe[src*="youtube.com"],
+iframe[src*="youtube-nocookie.com"] {
+  /* Reduzir impacto de performance do YouTube */
+  will-change: auto;
+  transform: translateZ(0);
+}
+
+/* Otimizar elementos que podem causar scroll blocking */
+.video-wrapper,
+.section-video {
+  contain: layout style paint;
+}
+
+/* Melhorar performance de animações */
+.animate-bounce,
+.animate-pulse,
+.animate-fade-in {
+  will-change: transform, opacity;
+}
+
+/* Otimizar elementos com hover effects */
+.hover-lift,
+.hover-glow {
+  will-change: transform, box-shadow;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Reduzir repaints desnecessários */
+.card-hover,
+.card-interactive {
+  contain: layout style;
+}

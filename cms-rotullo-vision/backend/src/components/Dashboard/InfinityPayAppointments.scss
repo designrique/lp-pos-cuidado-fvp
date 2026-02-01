@@ -1,0 +1,91 @@
+.infinity-pay-appointments {
+    padding: 24px;
+    background-color: var(--theme-elevation-50);
+    border-radius: 12px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border: 1px solid var(--theme-elevation-100);
+
+    .dashboard-title {
+        margin-bottom: 24px;
+        font-size: 1.5rem;
+        color: var(--theme-elevation-800);
+    }
+
+    .appointments-container {
+        overflow-x: auto;
+        background: var(--theme-elevation-0);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .appointments-table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+            text-align: left;
+            padding: 16px;
+            border-bottom: 1px solid var(--theme-elevation-100);
+        }
+
+        th {
+            background-color: var(--theme-elevation-50);
+            font-weight: 600;
+            color: var(--theme-elevation-600);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        td {
+            color: var(--theme-elevation-800);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .empty-cell {
+            text-align: center;
+            padding: 48px;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--theme-elevation-400);
+
+            p {
+                font-size: 1.1rem;
+                font-weight: 500;
+                color: var(--theme-elevation-600);
+                margin: 0;
+            }
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+
+            &.paid {
+                background-color: #d1fae5;
+                color: #065f46;
+            }
+        }
+    }
+}
+
+html[data-theme="dark"] .infinity-pay-appointments {
+    .appointments-table .status-badge.paid {
+        background-color: #064e3b;
+        color: #6ee7b7;
+    }
+}

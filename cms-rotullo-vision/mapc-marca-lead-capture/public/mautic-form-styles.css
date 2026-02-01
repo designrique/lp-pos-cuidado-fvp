@@ -1,0 +1,404 @@
+/* MAPC Form Styling */
+
+/* Root variables to match landing page */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --primary: 236 93% 24%;  /* MAPC Blue */
+  --primary-foreground: 0 0% 98%;
+  --accent: 0 72% 51%;  /* MAPC Red */
+  --accent-foreground: 0 0% 98%;
+  --input-border: 240 5.9% 90%;
+  --input-bg: 240 4.8% 95.9%;
+  --radius: 0.75rem;
+  --mapc-blue: 236 93% 24%;
+  --mapc-red: 0 72% 51%;
+  --mapc-blue-light: 234 89% 74%;
+  --mapc-red-light: 0 70% 85%;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Reset basic styles */
+body, html {
+  background: transparent !important;
+  font-family: var(--font-family) !important;
+  color: hsl(var(--foreground)) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Form container */
+.mauticform-innerform {
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+.mauticform-page-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Form fields */
+.mauticform-row {
+  margin-bottom: 1.25rem !important;
+}
+
+/* Labels */
+.mauticform-label {
+  font-weight: 500 !important;
+  margin-bottom: 0.375rem !important;
+  display: block !important;
+  color: hsl(var(--foreground)) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+}
+
+/* Text inputs and selects */
+.mauticform-input,
+.mauticform-selectbox,
+.mauticform-textarea,
+.form-control {
+  width: 100% !important;
+  padding: 0.625rem 0.75rem !important;
+  border: 1px solid hsl(var(--input-border)) !important;
+  border-radius: calc(var(--radius) * 0.75) !important;
+  background-color: hsl(var(--input-bg)) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+  box-sizing: border-box !important;
+  color: hsl(var(--foreground)) !important;
+  font-family: var(--font-family) !important;
+}
+
+/* Focus state */
+.mauticform-input:focus,
+.mauticform-selectbox:focus,
+.mauticform-textarea:focus,
+.form-control:focus {
+  border-color: hsl(var(--primary)) !important;
+  box-shadow: 0 0 0 2px hsla(var(--primary), 0.25) !important;
+  outline: none !important;
+}
+
+/* Error state */
+.mauticform-errormsg {
+  color: hsl(var(--accent)) !important;
+  font-size: 0.75rem !important;
+  margin-top: 0.25rem !important;
+  display: block !important;
+}
+
+.mauticform-row.mauticform-has-error .mauticform-input,
+.mauticform-row.mauticform-has-error .mauticform-selectbox,
+.mauticform-row.mauticform-has-error .mauticform-textarea {
+  border-color: hsl(var(--accent)) !important;
+}
+
+/* Checkboxes and radio buttons */
+.mauticform-checkboxgrp-row,
+.mauticform-radiogrp-row {
+  margin-bottom: 0.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.mauticform-checkboxgrp-label,
+.mauticform-radiogrp-label {
+  margin-left: 0.5rem !important;
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+}
+
+/* Submit button */
+.mauticform-button-wrapper {
+  text-align: center !important;
+  margin-top: 1.5rem !important;
+}
+
+.mauticform-button {
+  background-color: hsl(var(--primary)) !important;
+  background: linear-gradient(135deg, hsl(var(--mapc-blue)) 0%, hsl(var(--mapc-blue-light)) 100%) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border: none !important;
+  border-radius: calc(var(--radius)) !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  width: 100% !important;
+  text-align: center !important;
+  font-family: var(--font-family) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.mauticform-button:hover {
+  background-color: hsl(var(--primary), 0.9) !important;
+  background: linear-gradient(135deg, hsl(var(--mapc-blue-light)) 0%, hsl(var(--mapc-blue)) 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 10px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.mauticform-button:active {
+  transform: translateY(0) !important;
+  background: hsl(var(--mapc-blue)) !important;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.mauticform-button::after {
+  content: "" !important;
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
+  background-color: transparent !important;
+  transition: background-color 0.3s ease !important;
+  pointer-events: none !important;
+}
+
+.mauticform-button:active::after {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Form validation messages */
+.mauticform-message {
+  margin-top: 1rem !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: var(--radius) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+  display: none !important; /* Ocultar todas as mensagens */
+}
+
+.mauticform-error {
+  background-color: hsla(var(--accent), 0.1) !important;
+  border: 1px solid hsla(var(--accent), 0.2) !important;
+  color: hsl(var(--accent)) !important;
+}
+
+.mauticform-message-success {
+  background-color: hsla(143, 72%, 46%, 0.1) !important;
+  border: 1px solid hsla(143, 72%, 46%, 0.2) !important;
+  color: hsl(143, 72%, 46%) !important;
+  display: none !important; /* Garantir que a mensagem de sucesso do Mautic seja ocultada */
+}
+
+/* Progress bar */
+.mauticform-page-progress {
+  height: 0.25rem !important;
+  background-color: hsl(var(--input-bg)) !important;
+  margin-bottom: 1.5rem !important;
+  border-radius: 9999px !important;
+  overflow: hidden !important;
+}
+
+.mauticform-page-progress div {
+  height: 100% !important;
+  background-color: hsl(var(--primary)) !important;
+  transition: width 0.3s ease !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .mauticform-button {
+    padding: 0.625rem 1.25rem !important;
+    font-size: 0.875rem !important;
+  }
+  
+  .mauticform-input, 
+  .mauticform-selectbox,
+  .mauticform-textarea {
+    padding: 0.5rem 0.625rem !important;
+  }
+}
+
+/* Required field marker */
+.mauticform-required > label:after {
+  content: " *" !important;
+  color: hsl(var(--accent)) !important;
+}
+
+/* Mensagem de campo obrigatório - oculta por padrão */
+.mauticform-errorinfo {
+  display: none !important; 
+}
+
+/* Mostrar mensagem de erro apenas quando o campo tem erro */
+.mauticform-has-error .mauticform-errorinfo {
+  display: block !important;
+  color: hsl(var(--accent)) !important;
+  font-size: 0.75rem !important;
+  margin-top: 0.25rem !important;
+}
+
+/* Fix for form layouts */
+.mauticform-field-hidden {
+  display: none !important;
+}
+
+.mauticform-field {
+  width: 100% !important;
+}
+
+/* Special styles for the service dropdown */
+.mauticform-selectbox[data-name="service"], 
+select[name="mauticform[service]"] {
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--primary), 0.3) !important;
+}
+
+/* Special styles for the message textarea */
+.mauticform-textarea[data-name="message"],
+textarea[name="mauticform[message]"] {
+  min-height: 100px !important;
+}
+
+/* Remove any unwanted margins or borders */
+div[id^="mauticform_"] {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+/* Fix any Mautic-specific quirks */
+.mauticform-helpmessage {
+  font-size: 0.75rem !important;
+  color: hsl(var(--muted-foreground)) !important;
+  margin-top: 0.25rem !important;
+}
+
+/* Fix button alignment */
+.mauticform-button-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* Garantir que o botão não fique travado quando clicado */
+.mauticform-button-wrapper button,
+.mauticform-button-wrapper input[type="submit"],
+.mauticform-button {
+  position: relative !important;
+  pointer-events: auto !important;
+  user-select: none !important;
+}
+
+/* Bootstrap compatibility classes */
+.form-control {
+  display: block !important;
+  height: auto !important;
+  min-height: calc(1.5em + 0.75rem + 2px) !important;
+}
+
+/* Override any Bootstrap styling that might conflict */
+.btn-default, 
+.mauticform-button-wrapper .btn, 
+button[type="submit"],
+input[type="submit"] {
+  background-color: hsl(var(--primary)) !important;
+  background: linear-gradient(135deg, hsl(var(--mapc-blue)) 0%, hsl(var(--mapc-blue-light)) 100%) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border: none !important;
+  border-radius: calc(var(--radius)) !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.btn-default:hover,
+.mauticform-button-wrapper .btn:hover,
+button[type="submit"]:hover,
+input[type="submit"]:hover {
+  background-color: hsl(var(--primary), 0.9) !important;
+  background: linear-gradient(135deg, hsl(var(--mapc-blue-light)) 0%, hsl(var(--mapc-blue)) 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 10px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.btn-default:active,
+.mauticform-button-wrapper .btn:active,
+button[type="submit"]:active,
+input[type="submit"]:active {
+  transform: translateY(0) !important;
+  background: hsl(var(--mapc-blue)) !important;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Estilos específicos para ícones dentro do botão */
+.mauticform-button i,
+.btn-default i,
+.mauticform-button-wrapper .btn i,
+button[type="submit"] i,
+input[type="submit"] i {
+  display: inline-block !important;
+  margin-right: 0.5rem !important;
+  vertical-align: middle !important;
+}
+
+.mauticform-button img,
+.btn-default img,
+.mauticform-button-wrapper .btn img {
+  display: inline-block !important;
+  max-height: 1rem !important;
+  margin-right: 0.5rem !important;
+  vertical-align: middle !important;
+}
+
+/* Estilização específica para botão durante estado de submissão */
+.mauticform-button.disabled,
+.btn-default.disabled,
+button[type="submit"].disabled,
+input[type="submit"].disabled,
+.mauticform-button[disabled],
+.btn-default[disabled],
+button[type="submit"][disabled],
+input[type="submit"][disabled],
+.submitting-btn {
+  opacity: 0.7 !important;
+  cursor: not-allowed !important;
+  background: hsl(var(--mapc-blue)) !important;
+  pointer-events: none !important;
+  position: relative !important;
+}
+
+/* Estilo para o botão enviando */
+.submitting-btn::after {
+  content: "Enviando..." !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  color: white !important;
+  font-weight: 600 !important;
+  animation: pulse 1.5s infinite ease-in-out !important;
+  background-color: hsl(var(--mapc-blue)) !important;
+  border-radius: calc(var(--radius)) !important;
+}
+
+.submitting-btn > * {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}

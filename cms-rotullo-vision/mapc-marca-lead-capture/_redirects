@@ -1,0 +1,11 @@
+# Proxy para o Mautic - exceto para a submissão do formulário
+/api/*  https://crm.mapc.com.br/api/:splat  200
+/oauth/*  https://crm.mapc.com.br/oauth/:splat  200
+/form/*  https://crm.mapc.com.br/form/:splat  200!
+/media/*  https://crm.mapc.com.br/media/:splat  200
+
+# API de submissão de formulário é tratada pela nossa função serverless
+/api/submit  /.netlify/functions/submit-form  200
+
+# API de envio de WhatsApp é tratada pela nossa função serverless
+/api/whatsapp  /.netlify/functions/send-whatsapp  200

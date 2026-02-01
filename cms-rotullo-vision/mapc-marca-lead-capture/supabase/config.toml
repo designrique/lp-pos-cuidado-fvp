@@ -1,0 +1,4 @@
+project_id = "idntnjquztqcvvmyrywh"
+
+[functions.nocodb-submit]
+verify_jwt = false

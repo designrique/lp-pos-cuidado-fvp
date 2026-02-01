@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Favicon Configuration -->
+    <link rel="icon" href="/favicon-mapc.png" type="image/png">
+    <link rel="shortcut icon" href="/favicon-mapc.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-mapc.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-mapc.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-mapc.png">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Preconnect para recursos externos (críticos) -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
+    <link rel="preconnect" href="https://googleads.g.doubleclick.net" crossorigin />
+    <link rel="preconnect" href="https://ui-avatars.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <link rel="dns-prefetch" href="https://googleads.g.doubleclick.net" />
+    <link rel="dns-prefetch" href="https://ui-avatars.com" />
+    
+    <title>MAPC - Registro de Marcas e Patentes | Proteção Jurídica Garantida</title>
+    <meta name="description" content="Especialistas em registro de marcas e patentes no Brasil. 15+ anos de experiência, 98% de aprovação. Consulta gratuita e proteção jurídica garantida." />
+    <meta name="author" content="MAPC - Marcas e Patentes" />
+    <meta name="keywords" content="registro marca, registro patente, INPI, propriedade intelectual, proteção marca, marca registrada, patente Brasil" />
+
+    <meta property="og:title" content="MAPC - Registro de Marcas e Patentes | Proteção Jurídica Garantida" />
+    <meta property="og:description" content="Especialistas em registro de marcas e patentes no Brasil. 15+ anos de experiência, 98% de aprovação. Consulta gratuita e proteção jurídica garantida." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@lovable_dev" />
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    
+    <!-- Google Tag Manager - Otimizado para não bloquear renderização -->
+    <script>
+      // Inicializar dataLayer sem bloquear
+      window.dataLayer = window.dataLayer || [];
+      
+      // Carregar GTM de forma otimizada após interação do usuário ou timeout
+      function loadGTM() {
+        if (window.dataLayer && !window.gtmLoaded) {
+          window.gtmLoaded = true;
+          var script = document.createElement('script');
+          script.async = true;
+          script.defer = true;
+          script.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-PLP8K2TX';
+          document.head.appendChild(script);
+        }
+      }
+      
+      // Carregar após interação do usuário (scroll, click, touch)
+      ['scroll', 'click', 'touchstart'].forEach(function(event) {
+        window.addEventListener(event, loadGTM, { once: true, passive: true });
+      });
+      
+      // Fallback: carregar após 3 segundos se não houver interação
+      setTimeout(loadGTM, 3000);
+    </script>
+    <!-- End Google Tag Manager -->
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PLP8K2TX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+<!-- adicionando uma nova linha de teste -->

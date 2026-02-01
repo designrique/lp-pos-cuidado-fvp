@@ -1,0 +1,49 @@
+.rotullo-logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* Align left for sidebar usually, but let's see */
+  gap: 12px;
+  width: 100%;
+
+  .logo-img {
+    height: auto;
+    /* Slight increase for full logo */
+    width: auto;
+    max-width: 100%;
+    /* Allow more width for full text in logo */
+    max-height: 80px;
+    /* Increased from 35px to allow larger login logo */
+    object-fit: contain;
+  }
+
+  .logo-text {
+    display: none;
+    /* Hide text as it is in the image */
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--theme-elevation-800);
+    /* Payload theme variable, or fallback */
+    color: #333;
+  }
+}
+
+html[data-theme="dark"] .rotullo-logo .logo-text {
+  color: #fff;
+}
+
+.rotullo-icon {
+  display: flex;
+  justify-content: flex-start;
+  /* Align left like main logo */
+  align-items: center;
+  width: 100%;
+
+  img {
+    max-width: 100%;
+    max-height: 50px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+  }
+}

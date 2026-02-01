@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste API Krayin CRM</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; }
+        .section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        textarea { width: 100%; height: 200px; padding: 10px; border-radius: 4px; border: 1px solid #ddd; }
+        input { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; width: 300px; }
+        pre { background: #f8f9fa; padding: 15px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste da API Krayin CRM - MAPC</h1>
+    
+    <div class="section info">
+        <h2>🔧 Configuração</h2>
+        <div>
+            <label>Email Admin:</label>
+            <input type="email" id="adminEmail" value="" placeholder="admin@mapc.com.br">
+        </div>
+        <div>
+            <label>Senha Admin:</label>
+            <input type="password" id="adminPassword" value="" placeholder="sua_senha_admin">
+        </div>
+        <div>
+            <label>Base URL:</label>
+            <input type="text" id="baseUrl" value="https://crm.mapc.com.br/api/v1" style="width: 400px;">
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🔑 Passo 1: Obter Token de Autenticação</h2>
+        <button onclick="getAuthToken()">Obter Token</button>
+        <div id="tokenResult"></div>
+        <input type="text" id="authToken" placeholder="Token será preenchido automaticamente" style="width: 500px; margin-top: 10px;">
+    </div>
+
+    <div class="section">
+        <h2>📋 Passo 2: Verificar Sources e Types</h2>
+        <button onclick="getSources()">Listar Sources</button>
+        <button onclick="getTypes()">Listar Types</button>
+        <div id="sourcesTypesResult"></div>
+    </div>
+
+    <div class="section">
+        <h2>🎯 Passo 3: Criar Lead de Teste</h2>
+        <button onclick="createTestLead()">Criar Lead</button>
+        <div id="leadResult"></div>
+    </div>
+
+    <div class="section">
+        <h2>📊 Logs de Debug</h2>
+        <textarea id="debugLog" readonly placeholder="Logs aparecerão aqui..."></textarea>
+        <br>
+        <button onclick="clearLogs()">Limpar Logs</button>
+    </div>
+
+    <script>
+        let authToken = '';
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const debugLog = document.getElementById('debugLog');
+            debugLog.value += `[${timestamp}] ${message}\n`;
+            debugLog.scrollTop = debugLog.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearLogs() {
+            document.getElementById('debugLog').value = '';
+        }
+        
+        function showResult(elementId, content, isError = false) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="${isError ? 'error' : 'success'}" style="margin-top: 10px; padding: 10px; border-radius: 4px;">
+                <pre>${content}</pre>
+            </div>`;
+        }
+        
+        async function getAuthToken() {
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            const baseUrl = document.getElementById('baseUrl').value;
+            
+            if (!email || !password) {
+                showResult('tokenResult', 'Por favor, preencha email e senha', true);
+                return;
+            }
+            
+            try {
+                log(`Tentando autenticação em ${baseUrl}/login`);
+                
+                // Baseado na documentação oficial: email, password, device_name são obrigatórios
+                const response = await fetch(`${baseUrl}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        device_name: 'test-landing-page-mapc'
+                    })
+                });
+                
+                log(`Status da resposta: ${response.status}`);
+                const responseText = await response.text();
+                log(`Resposta completa: ${responseText}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status} - ${responseText}`);
+                }
+                
+                const data = JSON.parse(responseText);
+                // Conforme documentação, o token vem em data.token (sem Bearer prefix)
+                authToken = `Bearer ${data.token}`;
+                document.getElementById('authToken').value = authToken;
+                
+                showResult('tokenResult', `✅ Token obtido com sucesso!\n${authToken}`);
+                log('Token obtido com sucesso');
+                
+            } catch (error) {
+                log(`Erro na autenticação: ${error.message}`);
+                showResult('tokenResult', `❌ Erro: ${error.message}`, true);
+            }
+        }
+        
+        async function getSources() {
+            if (!authToken) {
+                alert('Primeiro obtenha o token de autenticação');
+                return;
+            }
+            
+            try {
+                const baseUrl = document.getElementById('baseUrl').value;
+                log(`Buscando sources em ${baseUrl}/settings/sources`);
+                
+                const response = await fetch(`${baseUrl}/settings/sources`, {
+                    headers: {
+                        'Authorization': authToken,
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                log(`Sources obtidas: ${JSON.stringify(data)}`);
+                showResult('sourcesTypesResult', `📋 Sources:\n${JSON.stringify(data, null, 2)}`);
+                
+            } catch (error) {
+                log(`Erro ao buscar sources: ${error.message}`);
+                showResult('sourcesTypesResult', `❌ Erro: ${error.message}`, true);
+            }
+        }
+        
+        async function getTypes() {
+            if (!authToken) {
+                alert('Primeiro obtenha o token de autenticação');
+                return;
+            }
+            
+            try {
+                const baseUrl = document.getElementById('baseUrl').value;
+                log(`Buscando types em ${baseUrl}/settings/types`);
+                
+                const response = await fetch(`${baseUrl}/settings/types`, {
+                    headers: {
+                        'Authorization': authToken,
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                log(`Types obtidas: ${JSON.stringify(data)}`);
+                showResult('sourcesTypesResult', `📝 Types:\n${JSON.stringify(data, null, 2)}`);
+                
+            } catch (error) {
+                log(`Erro ao buscar types: ${error.message}`);
+                showResult('sourcesTypesResult', `❌ Erro: ${error.message}`, true);
+            }
+        }
+        
+        async function createTestLead() {
+            if (!authToken) {
+                alert('Primeiro obtenha o token de autenticação');
+                return;
+            }
+            
+            try {
+                const baseUrl = document.getElementById('baseUrl').value;
+                
+                // Estrutura EXATA conforme documentação oficial Krayin
+                const testData = {
+                    // Campos obrigatórios conforme schema da documentação
+                    title: "Lead Teste - Landing Page MAPC",
+                    description: "Lead de teste criado via página de teste da landing page MAPC. Solicitação de registro de marca para empresa de teste.",
+                    lead_value: "5000", // Valor estimado para registro de marca
+                    lead_source_id: 3, // 3 = Web Form (conforme documentação)
+                    lead_type_id: 1, // 1 = New Business (conforme documentação)
+                    
+                    // Campos opcionais mas recomendados
+                    user_id: 1, // ID do usuário responsável
+                    expected_close_date: new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0], // +30 dias
+                    
+                    // Person data structure conforme documentação
+                    person: {
+                        name: "João Silva Teste", // Campo obrigatório
+                        emails: [
+                            {
+                                value: "joao.teste@empresateste.com.br",
+                                label: "work"
+                            }
+                        ],
+                        contact_numbers: [
+                            {
+                                value: "5581999887766",
+                                label: "work"
+                            }
+                        ],
+                        organization: {
+                            name: "Empresa Teste Registro de Marca Ltda"
+                        },
+                        entity_type: "persons"
+                    },
+                    
+                    entity_type: "leads"
+                };
+                
+                log(`Criando lead com estrutura oficial: ${JSON.stringify(testData, null, 2)}`);
+                
+                const response = await fetch(`${baseUrl}/leads`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': authToken, // sanctum_admin authentication
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                const responseText = await response.text();
+                log(`Resposta do lead: Status ${response.status}`);
+                log(`Body da resposta: ${responseText}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status} - ${responseText}`);
+                }
+                
+                const data = JSON.parse(responseText);
+                showResult('leadResult', `✅ Lead criado com sucesso!\n${JSON.stringify(data, null, 2)}`);
+                log('Lead criado com sucesso no Krayin CRM');
+                
+            } catch (error) {
+                log(`Erro ao criar lead: ${error.message}`);
+                showResult('leadResult', `❌ Erro: ${error.message}`, true);
+            }
+        }
+        
+        // Auto-preencher campos se houver no localStorage
+        window.addEventListener('load', () => {
+            const savedEmail = localStorage.getItem('krayin_test_email');
+            const savedPassword = localStorage.getItem('krayin_test_password');
+            
+            if (savedEmail) document.getElementById('adminEmail').value = savedEmail;
+            if (savedPassword) document.getElementById('adminPassword').value = savedPassword;
+            
+            // Salvar automaticamente quando alterado
+            document.getElementById('adminEmail').addEventListener('change', (e) => {
+                localStorage.setItem('krayin_test_email', e.target.value);
+            });
+            
+            document.getElementById('adminPassword').addEventListener('change', (e) => {
+                localStorage.setItem('krayin_test_password', e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>
