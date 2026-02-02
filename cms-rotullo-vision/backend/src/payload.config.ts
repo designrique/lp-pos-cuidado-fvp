@@ -1,5 +1,14 @@
 import path from 'path'
 import { buildConfig } from 'payload/config'
+
+// Debug log for environment variables
+console.log('--- Payload Config Loading ---');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('DATABASE_URI Present:', !!process.env.DATABASE_URI);
+if (process.env.DATABASE_URI) {
+    console.log('DATABASE_URI Length:', process.env.DATABASE_URI.length);
+}
+console.log('--- End Config Debug ---');
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { slateEditor } from '@payloadcms/richtext-slate'
 import { webpackBundler } from '@payloadcms/bundler-webpack'
@@ -65,7 +74,7 @@ export default buildConfig({
         pool: {
             connectionString: process.env.DATABASE_URI || '',
         },
-        push: true,
+        push: true, // Auto-create tables
     }),
     cors: [
         'http://localhost:5173',

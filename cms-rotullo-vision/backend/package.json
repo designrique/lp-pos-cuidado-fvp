@@ -7,7 +7,7 @@
     "dev": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts nodemon",
     "build": "tsc && copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png}\" dist && copyfiles -u 1 src/assets-seed/**/* dist && payload build",
     "start": "node dist/server.js",
-    "serve": "npm run payload:migrate && node dist/server.js",
+    "serve": "node dist/server.js",
     "payload:migrate": "cross-env PAYLOAD_CONFIG_PATH=dist/payload.config.js payload migrate",
     "generate:types": "payload generate:types",
     "seed": "ts-node src/seed.ts"
