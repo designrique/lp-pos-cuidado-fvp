@@ -26,9 +26,7 @@ import InfinityPayAppointments from './components/Dashboard/InfinityPayAppointme
 import { Appointments } from './collections/Appointments'
 
 export default buildConfig({
-    serverURL: (process.env.NODE_ENV === 'production' || process.env.RAILWAY_SERVICE_ID || (process.env.PAYLOAD_PUBLIC_SERVER_URL || '').includes('railway.app'))
-        ? 'https://mapc.com.br'
-        : (process.env.PAYLOAD_PUBLIC_SERVER_URL || ''),
+    serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || '',
     admin: {
         user: Users.slug,
         bundler: webpackBundler(),
