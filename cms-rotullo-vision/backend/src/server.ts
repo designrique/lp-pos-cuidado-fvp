@@ -1,12 +1,11 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import 'ignore-styles'
 console.log('Ignore styles loaded - patching require extensions');
 import express from 'express'
 import payload from 'payload'
-import dotenv from 'dotenv'
 import cors from 'cors'
 import config from './payload.config'
-
-dotenv.config()
 
 const app = express()
 // Trust the proxy to ensure secure cookies work correctly behind Netlify

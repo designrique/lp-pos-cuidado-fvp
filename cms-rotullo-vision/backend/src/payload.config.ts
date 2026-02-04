@@ -24,9 +24,23 @@ import { SiteSettings } from './globals/SiteSettings'
 import { Logo, Icon } from './graphics/Branding'
 import InfinityPayAppointments from './components/Dashboard/InfinityPayAppointments'
 import { Appointments } from './collections/Appointments'
+import { Campaigns } from './collections/Campaigns'
 
 export default buildConfig({
     serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || '',
+    email: {
+        transportOptions: {
+            host: process.env.SMTP_HOST,
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
+            },
+            port: Number(process.env.SMTP_PORT) || 587,
+            secure: Number(process.env.SMTP_PORT) === 465,
+        },
+        fromName: process.env.SMTP_FROM_NAME || 'Instituto Ariana Borges',
+        fromAddress: process.env.SMTP_FROM_ADDRESS || 'contato@institutoarianaborges.com.br',
+    },
     admin: {
         user: Users.slug,
         bundler: webpackBundler(),
@@ -44,6 +58,16 @@ export default buildConfig({
                 InfinityPayAppointments,
             ],
         },
+        webpack: (config) => ({
+            ...config,
+            resolve: {
+                ...config.resolve,
+                alias: {
+                    ...(config.resolve?.alias || {}),
+                    [path.resolve(__dirname, 'hooks/afterChangeCampaign')]: path.resolve(__dirname, 'mocks/emptyObject.js'),
+                },
+            },
+        }),
     },
     // CSRF protection: Allow the Netlify domain
     csrf: [
@@ -53,6 +77,7 @@ export default buildConfig({
     collections: [
         Users,
         Appointments,
+        Campaigns,
         HeroSection,
         Services,
         Testimonials,
