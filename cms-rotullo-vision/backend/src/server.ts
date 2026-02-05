@@ -85,44 +85,77 @@ const start = async () => {
 
     // ENDPOINT TEMPORÁRIO: Executar migração de banco de dados
     // REMOVER APÓS EXECUTAR!
-    app.get('/api/admin/migrate-add-client-email', async (req, res) => {
+    // CRON JOB: Verificar carrinhos abandonados a cada 10 minutos
+    const cron = require('node-cron');
+    const { checkAbandonedCarts } = require('./cron/checkAbandonedCarts'); // O path relativo pode mudar no dist, cuidado
+
+    // Importar dinamicamente para garantir que o payload esteja pronto (embora aqui já esteja)
+    // No build, o path muda. Em dev (ts-node) é ./cron/checkAbandonedCarts.ts.
+    // Melhor importar no topo se possível, mas aqui vamos usar require para garantir execução
+
+    // Agendamento: a cada 10 minutos
+    cron.schedule('*/10 * * * *', async () => {
         try {
-            // @ts-ignore - Acessar pool do banco via Payload
-            const db = payload.db.pool;
-
-            payload.logger.info('🔧 Executando migração: Adicionar coluna client_email...');
-
-            // Adicionar coluna
-            await db.query(`
-                ALTER TABLE appointments 
-                ADD COLUMN IF NOT EXISTS client_email VARCHAR(255);
-            `);
-
-            payload.logger.info('✅ Coluna adicionada!');
-
-            // Verificar se foi criada
-            const verification = await db.query(`
-                SELECT column_name, data_type, character_maximum_length
-                FROM information_schema.columns 
-                WHERE table_name = 'appointments' 
-                AND column_name = 'client_email';
-            `);
-
-            payload.logger.info('🔍 Verificação:', verification.rows);
-
-            res.json({
-                success: true,
-                message: 'Migração executada com sucesso!',
-                column: verification.rows[0] || null
-            });
-
-        } catch (error) {
-            payload.logger.error('❌ Erro na migração:', error);
-            res.status(500).json({
-                success: false,
-                error: (error as Error).message
-            });
+            payload.logger.info('🕒 Executando Cron Job: checkAbandonedCarts');
+            // Como checkAbandonedCarts é exportado como module, precisamos pegar a função
+            // Se estivermos usando 'import' no topo, seria melhor. 
+            // Mas vamos assumir que o require funcione se o arquivo for compilado corretamente.
+            // Para evitar problemas de caminho no dist/, vamos ser defensivos.
+            // NOTA: O arquivo checkAbandonedCarts.ts deve ser compilado.
+            await checkAbandonedCarts();
+        } catch (err) {
+            payload.logger.error('Erro no Cron:', err);
         }
+    });
+
+    // ENDPOINT DE DIAGNÓSTICO: Testar conexão com Brevo (HTTPS nativo)
+    app.get('/api/debug/brevo', (req, res) => {
+        const https = require('https');
+        const apiKey = process.env.BREVO_API_KEY || '';
+
+        if (!apiKey) {
+            return res.status(500).json({ error: 'BREVO_API_KEY não configurada' });
+        }
+
+        const options = {
+            hostname: 'api.brevo.com',
+            port: 443,
+            path: '/v3/account',
+            method: 'GET',
+            headers: {
+                'accept': 'application/json',
+                'api-key': apiKey
+            },
+            timeout: 10000 // 10s
+        };
+
+        const request = https.request(options, (response) => {
+            let data = '';
+            response.on('data', (chunk) => { data += chunk; });
+            response.on('end', () => {
+                try {
+                    const json = JSON.parse(data || '{}');
+                    res.json({
+                        status: response.statusCode,
+                        data: json,
+                        env_key_start: apiKey.substring(0, 5) + '...'
+                    });
+                } catch (e) {
+                    res.status(500).json({ error: 'Erro ao fazer parse da resposta', raw: data });
+                }
+            });
+        });
+
+        request.on('error', (e) => {
+            res.status(500).json({ error: e.message });
+        });
+
+        request.on('timeout', () => {
+            request.destroy();
+            res.status(504).json({ error: 'Timeout de conexão com Brevo' });
+        });
+
+        request.end();
     });
 
     app.get('/api/public/testimonials', async (req, res) => {

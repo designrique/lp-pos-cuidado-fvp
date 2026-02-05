@@ -84,5 +84,13 @@ export const Appointments: CollectionConfig = {
             type: 'text',
             label: 'Link de Pagamento (Original)',
         },
+        {
+            name: 'abandonedEmailSent',
+            type: 'checkbox',
+            label: 'Email de Abandono Enviado',
+            admin: {
+                readOnly: true,
+            }
+        }
     ],
 };
