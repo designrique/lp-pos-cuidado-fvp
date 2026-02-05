@@ -14,7 +14,7 @@ export const afterChangeAppointment: CollectionAfterChangeHook = async ({ doc, o
 
     try {
         // Configurar transporter do Brevo SMTP
-        const transporter = nodemailer.createTransporter({
+        const transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
             port: parseInt(process.env.SMTP_PORT || '587'),
             secure: false,
@@ -35,7 +35,7 @@ export const afterChangeAppointment: CollectionAfterChangeHook = async ({ doc, o
 
         // Email para Ariana Borges
         const emailToAriana = {
-            from: `"Instituto Ariana Borges" <${process.env.SMTP_FROM_EMAIL}>`,
+            from: `"Instituto Ariana Borges" <${process.env.SMTP_FROM_ADDRESS}>`,
             to: 'institutoarianaborges@gmail.com',
             subject: `🎉 Novo Agendamento: ${serviceName}`,
             html: `
@@ -146,7 +146,7 @@ export const afterChangeAppointment: CollectionAfterChangeHook = async ({ doc, o
         // Enviar email de confirmação para o cliente (se tiver email)
         if (doc.clientEmail) {
             const emailToClient = {
-                from: `"Instituto Ariana Borges" <${process.env.SMTP_FROM_EMAIL}>`,
+                from: `"Instituto Ariana Borges" <${process.env.SMTP_FROM_ADDRESS}>`,
                 to: doc.clientEmail,
                 subject: `✨ Confirmação de Agendamento - ${serviceName}`,
                 html: `
