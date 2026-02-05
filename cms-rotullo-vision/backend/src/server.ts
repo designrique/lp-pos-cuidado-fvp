@@ -83,6 +83,48 @@ const start = async () => {
         res.json(data.docs)
     })
 
+    // ENDPOINT TEMPORÁRIO: Executar migração de banco de dados
+    // REMOVER APÓS EXECUTAR!
+    app.get('/api/admin/migrate-add-client-email', async (req, res) => {
+        try {
+            // @ts-ignore - Acessar pool do banco via Payload
+            const db = payload.db.pool;
+
+            payload.logger.info('🔧 Executando migração: Adicionar coluna client_email...');
+
+            // Adicionar coluna
+            await db.query(`
+                ALTER TABLE appointments 
+                ADD COLUMN IF NOT EXISTS client_email VARCHAR(255);
+            `);
+
+            payload.logger.info('✅ Coluna adicionada!');
+
+            // Verificar se foi criada
+            const verification = await db.query(`
+                SELECT column_name, data_type, character_maximum_length
+                FROM information_schema.columns 
+                WHERE table_name = 'appointments' 
+                AND column_name = 'client_email';
+            `);
+
+            payload.logger.info('🔍 Verificação:', verification.rows);
+
+            res.json({
+                success: true,
+                message: 'Migração executada com sucesso!',
+                column: verification.rows[0] || null
+            });
+
+        } catch (error) {
+            payload.logger.error('❌ Erro na migração:', error);
+            res.status(500).json({
+                success: false,
+                error: (error as Error).message
+            });
+        }
+    });
+
     app.get('/api/public/testimonials', async (req, res) => {
         const data = await payload.find({
             collection: 'testimonials',
