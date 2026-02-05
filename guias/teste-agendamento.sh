@@ -17,7 +17,7 @@ PAYLOAD='{
   "serviceName": "Sessão Individual",
   "amount": 150,
   "status": "paid",
-  "transactionId": "TEST_HENRIQUE_006b"
+  "transactionId": "TEST_HENRIQUE_007"
 }'
 
 echo "📋 Dados do agendamento:"

@@ -1,4 +1,5 @@
 import { CollectionAfterChangeHook } from 'payload/types';
+import https from 'https';
 
 export const afterChangeAppointment: CollectionAfterChangeHook = async ({ doc, operation, req }) => {
     // Só envia email quando um novo agendamento é criado
@@ -11,10 +12,12 @@ export const afterChangeAppointment: CollectionAfterChangeHook = async ({ doc, o
         return doc;
     }
 
+    req.payload.logger.info(`[Email] Iniciando processo de notificação para agendamento ${doc.id}`);
+
     try {
         const apiKey = process.env.BREVO_API_KEY;
         if (!apiKey) {
-            req.payload.logger.error('BREVO_API_KEY não configurada');
+            req.payload.logger.error('[Email] BREVO_API_KEY não configurada');
             return doc;
         }
 
@@ -27,16 +30,10 @@ export const afterChangeAppointment: CollectionAfterChangeHook = async ({ doc, o
             timeZone: 'America/Sao_Paulo'
         }) : 'Data a confirmar';
 
-        // Função auxiliar para enviar email via Brevo API (fetch nativo)
-        const sendEmail = async (to: { email: string; name?: string }[], subject: string, htmlContent: string) => {
-            const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-                method: 'POST',
-                headers: {
-                    'accept': 'application/json',
-                    'api-key': apiKey,
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({
+        // Função auxiliar para enviar email via Brevo API (https nativo)
+        const sendEmail = (to: { email: string; name?: string }[], subject: string, htmlContent: string): Promise<any> => {
+            return new Promise((resolve, reject) => {
+                const data = JSON.stringify({
                     sender: {
                         name: 'Instituto Ariana Borges',
                         email: 'nao-responda@arianaborges.com'
@@ -44,15 +41,52 @@ export const afterChangeAppointment: CollectionAfterChangeHook = async ({ doc, o
                     to: to,
                     subject: subject,
                     htmlContent: htmlContent
-                })
+                });
+
+                const options = {
+                    hostname: 'api.brevo.com',
+                    port: 443,
+                    path: '/v3/smtp/email',
+                    method: 'POST',
+                    headers: {
+                        'accept': 'application/json',
+                        'api-key': apiKey,
+                        'content-type': 'application/json',
+                        'content-length': Buffer.byteLength(data)
+                    },
+                    timeout: 10000 // 10s timeout
+                };
+
+                req.payload.logger.info(`[Email] Enviando para ${to[0].email}...`);
+
+                const request = https.request(options, (res) => {
+                    let responseData = '';
+
+                    res.on('data', (chunk) => {
+                        responseData += chunk;
+                    });
+
+                    res.on('end', () => {
+                        if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
+                            resolve(JSON.parse(responseData || '{}'));
+                        } else {
+                            reject(new Error(`Status ${res.statusCode}: ${responseData}`));
+                        }
+                    });
+                });
+
+                request.on('error', (e) => {
+                    reject(new Error(`Erro de conexão: ${e.message}`));
+                });
+
+                request.on('timeout', () => {
+                    request.destroy();
+                    reject(new Error('Timeout na conexão com Brevo (10s)'));
+                });
+
+                request.write(data);
+                request.end();
             });
-
-            if (!response.ok) {
-                const errorData = await response.text();
-                throw new Error(`Erro API Brevo (${response.status}): ${errorData}`);
-            }
-
-            return await response.json();
         };
 
         // HTML do email para Ariana
@@ -161,7 +195,7 @@ export const afterChangeAppointment: CollectionAfterChangeHook = async ({ doc, o
             `🎉 Novo Agendamento: ${serviceName}`,
             htmlToAriana
         );
-        req.payload.logger.info(`Email de notificação enviado para Ariana sobre agendamento de ${clientName}`);
+        req.payload.logger.info(`[Email] Sucesso envio Ariana: ${clientName}`);
 
         // Enviar email de confirmação para o cliente (se tiver email)
         if (doc.clientEmail) {
@@ -286,11 +320,11 @@ export const afterChangeAppointment: CollectionAfterChangeHook = async ({ doc, o
                 `✨ Confirmação de Agendamento - ${serviceName}`,
                 htmlToClient
             );
-            req.payload.logger.info(`Email de confirmação enviado para ${doc.clientEmail}`);
+            req.payload.logger.info(`[Email] Sucesso envio Cliente: ${doc.clientEmail}`);
         }
 
     } catch (error) {
-        req.payload.logger.error(`Erro ao enviar email de notificação de agendamento: ${error}`);
+        req.payload.logger.error(`[Email] ERRO FINAL: ${error}`);
         // Não falha a operação se o email não for enviado
     }
 
