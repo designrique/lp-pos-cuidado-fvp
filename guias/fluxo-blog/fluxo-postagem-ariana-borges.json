@@ -1,0 +1,125 @@
+{
+    "name": "Auto-Postagem Blog Instituto Ariana Borges",
+    "nodes": [
+        {
+            "parameters": {
+                "url": "https://serpapi.com/search?engine=google_trends",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpQueryAuth",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "q",
+                            "value": "=terapia holística"
+                        },
+                        {
+                            "name": "geo",
+                            "value": "BR"
+                        },
+                        {
+                            "name": "hl",
+                            "value": "pt"
+                        },
+                        {
+                            "name": "date",
+                            "value": "={{ $now.minus({ days: 7 }).format('yyyy-MM-dd') }} {{ $now.format('yyyy-MM-dd') }}"
+                        },
+                        {
+                            "name": "data_type",
+                            "value": "RELATED_QUERIES"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "de7e7025-fa2a-42f1-a0b7-ded8f9268d0a",
+            "name": "Get Google Trends - Terapias Holísticas",
+            "type": "n8n-nodes-base.httpRequest",
+            "position": [
+                1696,
+                976
+            ],
+            "typeVersion": 4.2
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "mode": "list",
+                    "value": "gpt-4",
+                    "cachedResultName": "GPT-4"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=Você faz parte de uma equipe que cria conteúdo de excelência para o blog do Instituto Ariana Borges.\n\nO Instituto Ariana Borges é uma referência em terapias holísticas no Brasil, oferecendo:\n- Terapia Individual (cura emocional, reconexão espiritual, transformação interior)\n- Formação de Terapeutas (cursos de Psicanálise Integrativa, Constelação Familiar, Mindfulness)\n- Grupos de Autoconhecimento (jornadas de desenvolvimento pessoal)\n\nPÚBLICO-ALVO:\nPessoas buscando cura emocional, desenvolvimento pessoal, espiritualidade, bem-estar e transformação interior. Profissionais interessados em formação terapêutica.\n\nSUA MISSÃO:\nVocê receberá 2 keywords que estão em alta no Google Trends Brasil. Escolha aquela que:\n\n1. Seja mais relevante para o público do Instituto (pessoas em busca de cura, autoconhecimento, espiritualidade)\n2. Tenha potencial de conversão (pessoas realmente interessadas em terapia/desenvolvimento pessoal)\n3. Esteja alinhada com os valores de cura holística, transformação e bem-estar\n4. Possa gerar conteúdo de valor que ajude as pessoas em sua jornada\n\nCONSIDERAÇÕES:\n- Prefira tópicos que conectem ciência e espiritualidade\n- Evite tópicos sensacionalistas ou superficiais\n- Busque temas que permitam abordagem profunda e empática\n\nRETORNE APENAS a keyword escolhida, sem explicações.\n\nKeyword 1:\n{{ $('Extract Top 2 Trends').item.json['most-trending']['#1'].toJsonString() }}\n\nKeyword 2:\n{{ $('Extract Top 2 Trends').item.json['most-trending']['#2'].toJsonString() }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "ef2c3a0e-a0e0-4226-950a-e9ffa76d308e",
+            "name": "Select Best SEO Topic - Instituto",
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "position": [
+                2480,
+                976
+            ],
+            "typeVersion": 1.8
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "mode": "list",
+                    "value": "gpt-4",
+                    "cachedResultName": "GPT-4"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=Você é o redator oficial do blog do Instituto Ariana Borges, especializado em terapias holísticas e espiritualidade.\n\nCONTEXTO DO INSTITUTO:\n- Fundado por Ariana Borges, terapeuta com mais de 12 mil atendimentos e 1.500 alunos formados\n- Abordagem integrativa: Psicanálise + Neurociência + Mindfulness + Terapias Holísticas\n- Missão: Guiar pessoas em jornadas de cura profunda e reconexão com sua essência\n- Valores: Acolhimento, transformação, ciência, espiritualidade, empatia\n\nPÚBLICO-ALVO:\n- Pessoas em busca de cura emocional e transformação interior\n- Profissionais interessados em formação terapêutica\n- Indivíduos em jornada de autoconhecimento e desenvolvimento pessoal\n- Pessoas buscando conexão espiritual e propósito de vida\n\nTOM E ESTILO:\n- **Acolhedor e empático**: Como uma conversa com um terapeuta de confiança\n- **Profissional e embasado**: Citando fontes científicas e estudos quando disponível\n- **Inspirador e esperançoso**: Mostrando caminhos de transformação e cura\n- **Acessível**: Linguagem clara e compreensível (nível de leitura 5º ano)\n- **Respeitoso**: Honrando a dor e a jornada de cada pessoa\n\nESTRUTURA DO POST:\n1. **Título chamativo** com a keyword principal (despertar curiosidade e empatia)\n2. **Introdução empática** (3-4 parágrafos conectando com a dor/busca do leitor)\n3. **Desenvolvimento detalhado** (mínimo 1800-2200 palavras)\n   - Explicação do tema com base científica\n   - Conexão com espiritualidade e terapias holísticas\n   - Exemplos práticos e aplicáveis no dia a dia\n   - Citações de estudos e fontes confiáveis (com URLs)\n4. **Seção prática**: Exercícios ou reflexões que o leitor pode fazer\n5. **Conclusão inspiradora** com call-to-action suave (convidar para conhecer o Instituto)\n\nREQUISITOS SEO:\n- Keyword principal no título, H1, introdução e ao longo do texto (densidade natural)\n- Incluir keywords relacionadas naturalmente: {{ $('Filter High Volume Keywords').item.json.result }}\n- Estrutura semântica: H1 (título), H2 (seções principais), H3 (subtópicos)\n- Citar fontes com URLs completos para hiperlinks\n- Meta description otimizada (será gerada em etapa posterior)\n\nREQUISITOS DE CONTEÚDO:\n- Baseie-se TOTALMENTE na pesquisa fornecida\n- Inclua dados científicos quando disponíveis\n- Conecte conceitos científicos com práticas holísticas\n- Use exemplos que ressoem com o público brasileiro\n- Evite jargões técnicos sem explicação\n- Mantenha tom de esperança e possibilidade de transformação\n\nFORMATAÇÃO:\n- Use **negrito** para conceitos-chave\n- Use *itálico* para ênfase emocional\n- Crie listas quando apropriado\n- Inclua citações inspiradoras quando relevante\n- Quebre parágrafos longos (máximo 4-5 linhas)\n\nDADOS PARA O POST:\n\nTópico Principal:\n{{ $('Select Best SEO Topic - Instituto').item.json.message.content }}\n\nKeywords Relacionadas:\n{{ $('Filter High Volume Keywords').item.json.result }}\n\nPesquisa Detalhada:\n{{ $json.research }}\n\nESCREVA O POST COMPLETO EM PORTUGUÊS DO BRASIL. Não corte, não resuma. Entregue o artigo completo de 1800-2200 palavras."
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "1ed934d0-921a-4deb-a794-27ea4c1ac8f2",
+            "name": "Draft Blog Content - Instituto",
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "position": [
+                1488,
+                1264
+            ],
+            "typeVersion": 1.8
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://site-ariana-borges-final-production.up.railway.app/api/posts",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"title\": \"{{ $('Generate Blog Title').item.json.message.content }}\",\n  \"slug\": \"{{ $('Create SEO Slug').item.json.message.content }}\",\n  \"excerpt\": \"{{ $('Create Meta Description').item.json.message.content }}\",\n  \"content\": {{ $('Generate Semantic HTML').item.json.message.content | tojson }},\n  \"image\": \"{{ $json['image-url'] }}\",\n  \"status\": \"draft\",\n  \"publishedDate\": \"{{ $now.toISO() }}\"\n}",
+                "options": {}
+            },
+            "id": "16721919-87a9-4cb5-b71b-26cc24a68f93",
+            "name": "Publish to Payload CMS",
+            "type": "n8n-nodes-base.httpRequest",
+            "position": [
+                1984,
+                1552
+            ],
+            "typeVersion": 4.2
+        }
+    ],
+    "connections": {},
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "meta": {
+        "instanceId": "custom-instituto-ariana-borges"
+    }
+}

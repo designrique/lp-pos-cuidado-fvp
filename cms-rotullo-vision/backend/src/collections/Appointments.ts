@@ -1,4 +1,5 @@
 import { CollectionConfig } from 'payload/types';
+import { afterChangeAppointment } from '../hooks/afterChangeAppointment';
 
 export const Appointments: CollectionConfig = {
     slug: 'appointments',
@@ -8,7 +9,7 @@ export const Appointments: CollectionConfig = {
     },
     admin: {
         useAsTitle: 'clientName',
-        defaultColumns: ['date', 'clientName', 'serviceName', 'amount', 'status'],
+        defaultColumns: ['date', 'clientName', 'clientEmail', 'serviceName', 'amount', 'status'],
         group: 'Vendas',
     },
     access: {
@@ -16,6 +17,11 @@ export const Appointments: CollectionConfig = {
         create: () => true, // Allows n8n to post without auth (simplified) or use API Key
         update: () => true,
         delete: () => true,
+    },
+    hooks: {
+        afterChange: [
+            afterChangeAppointment
+        ]
     },
     fields: [
         {
@@ -34,6 +40,15 @@ export const Appointments: CollectionConfig = {
             type: 'text',
             required: true,
             label: 'Nome do Cliente',
+        },
+        {
+            name: 'clientEmail',
+            type: 'email',
+            required: false,
+            label: 'Email do Cliente',
+            admin: {
+                description: 'Email para enviar confirmação de agendamento'
+            }
         },
         {
             name: 'serviceName',

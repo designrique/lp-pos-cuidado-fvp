@@ -65,6 +65,7 @@ export default buildConfig({
                 alias: {
                     ...(config.resolve?.alias || {}),
                     [path.resolve(__dirname, 'hooks/afterChangeCampaign')]: path.resolve(__dirname, 'mocks/emptyObject.js'),
+                    [path.resolve(__dirname, 'hooks/afterChangeAppointment')]: path.resolve(__dirname, 'mocks/emptyObject.js'),
                 },
             },
         }),
